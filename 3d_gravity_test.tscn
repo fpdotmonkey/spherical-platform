@@ -46,7 +46,6 @@ albedo_color = Color(0, 1, 0, 1)
 albedo_color = Color(0, 0, 1, 1)
 
 [node name="3d Gravity Test" type="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20.7963, 0)
 
 [node name="Planet" type="Node3D" parent="."]
 
@@ -97,7 +96,6 @@ material = SubResource("StandardMaterial3D_ixhde")
 [node name="Player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 0)
 collision_mask = 3
-floor_block_on_wall = false
 script = ExtResource("1_3nx15")
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Player"]

@@ -2,15 +2,12 @@ extends CharacterBody3D
 
 
 @export var speed: float = 3.0
+
 var center: Vector3 = Vector3.ZERO
 var forward: GoDirection = GoDirection.NEUTRAL
 var left: GoDirection = GoDirection.NEUTRAL
-#@export var height: float = 10.5
+var local_velocity: Vector3 = Vector3.ZERO
 
-#@export var my_basis = transform.basis
-#@export var up: Vector3 = Vector3.ZERO
-#@export var forward: Vector3 = Vector3.ZERO
-#
 @onready var velocity_debug = $velocity_thing
 
 enum GoDirection {
@@ -24,7 +21,7 @@ func new_gravity(gravity: Vector3):
 	center = gravity
 	
 	
-func face_gravity():
+func update_gravity():
 	var up = position - center
 	var rotation_axis = transform.basis.y.cross(up).normalized()
 	if rotation_axis == Vector3.ZERO:
@@ -36,18 +33,21 @@ func face_gravity():
 	
 	
 func _input(event):
-	if event.is_action_pressed("up", true):
+	print(".")
+	if event.is_action_pressed("up"):
 		forward = GoDirection.DRIVE
-	if event.is_action_pressed("left", true):
+	elif event.is_action_pressed("left"):
 		left = GoDirection.DRIVE
-	if event.is_action_pressed("down", true):
+	elif event.is_action_pressed("down"):
 		forward = GoDirection.REVERSE
-	if event.is_action_pressed("right", true):
+	elif event.is_action_pressed("right"):
 		left = GoDirection.REVERSE
-	if event.is_action_released("up", true) or event.is_action_released("down", true):
+	elif event.is_action_released("up") or event.is_action_released("down"):
 		forward = GoDirection.NEUTRAL
-	if event.is_action_released("left", true) or event.is_action_released("right", true):
+	elif event.is_action_released("left") or event.is_action_released("right"):
 		left = GoDirection.NEUTRAL
+	else:
+		return
 
 	var z: float = 0.0
 	var x: float = 0.0
@@ -65,17 +65,17 @@ func _input(event):
 			x = 1.0
 		_:
 			x = 0.0
-	velocity = speed * (transform.basis * Vector3(x, 0.0, z))
+	local_velocity = speed * Vector3(x, 0.0, z).normalized()
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
+	update_gravity()
+	velocity = transform.basis * local_velocity
 	move_and_slide()
-	face_gravity()
-	apply_floor_snap()
 	
 	
-func _process(delta):
+func _process(_delta):
 	var v = velocity
 	if is_on_floor():
 		v = get_real_velocity()
-	velocity_debug.set_position(transform.basis.inverse() * velocity)
+	velocity_debug.set_position(transform.basis.inverse() * v)
