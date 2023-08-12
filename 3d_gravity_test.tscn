@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://68303wsnr01k"]
+[gd_scene load_steps=12 format=3 uid="uid://68303wsnr01k"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_3nx15"]
 [ext_resource type="PackedScene" uid="uid://c4nph5fo05gdh" path="res://test_map.blend" id="1_a3hvb"]
 [ext_resource type="Script" path="res://GravityField.gd" id="1_ep5tw"]
+[ext_resource type="Script" path="res://CameraController.gd" id="4_7jcid"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ym6qn"]
 radius = 10.0
@@ -50,22 +51,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 0)
 collision_mask = 3
 script = ExtResource("1_3nx15")
 
+[node name="CameraBase" type="Node3D" parent="Player"]
+script = ExtResource("4_7jcid")
+
+[node name="CameraRot" type="Node3D" parent="Player/CameraBase"]
+
+[node name="Camera3D" type="Camera3D" parent="Player/CameraBase/CameraRot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Player/CameraBase/CameraRot/Camera3D"]
+light_energy = 10.0
+omni_range = 59.248
+
 [node name="CSGSphere3D" type="CSGSphere3D" parent="Player"]
 radius = 1.0
 material = SubResource("StandardMaterial3D_8rbf1")
-
-[node name="Camera3D" type="Camera3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 0.563439, 0.826157, 0, -0.826157, 0.563439, 0, 17.7916, 18.2552)
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Player/Camera3D"]
-
-[node name="CSGSphere3D" type="CSGSphere3D" parent="Player/Camera3D"]
-radius = 0.2
-
-[node name="CSGCylinder3D" type="CSGCylinder3D" parent="Player/Camera3D"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 8.32893e-09, -0.190544)
-radius = 0.1
-height = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 shape = SubResource("SphereShape3D_mcena")

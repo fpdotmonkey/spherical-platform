@@ -11,8 +11,8 @@ var local_velocity: Vector3 = Vector3.ZERO
 @onready var velocity_debug = $velocity_thing
 
 enum GoDirection {
-	DRIVE,
 	NEUTRAL,
+	DRIVE,
 	REVERSE
 }
 
@@ -33,7 +33,6 @@ func update_gravity():
 	
 	
 func _input(event):
-	print(".")
 	if event.is_action_pressed("up"):
 		forward = GoDirection.DRIVE
 	elif event.is_action_pressed("left"):
