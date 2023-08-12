@@ -55,14 +55,14 @@ func _input(event):
 			z = -1.0
 		GoDirection.REVERSE:
 			z = 1.0
-		_:
+		GoDirection.NEUTRAL, _:
 			z = 0.0
 	match left:
 		GoDirection.DRIVE:
 			x = -1.0
 		GoDirection.REVERSE:
 			x = 1.0
-		_:
+		GoDirection.NEUTRAL, _:
 			x = 0.0
 	local_velocity = speed * Vector3(x, 0.0, z).normalized()
 
