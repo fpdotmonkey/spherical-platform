@@ -41,6 +41,8 @@ shape = SubResource("SphereShape3D_ym6qn")
 [node name="Gravity Field" type="Area3D" parent="Planet"]
 gravity_space_override = 1
 gravity_point = true
+gravity_point_center = Vector3(0, 0, 0)
+gravity_direction = Vector3(0, 0, 0)
 script = ExtResource("1_ep5tw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Planet/Gravity Field"]
