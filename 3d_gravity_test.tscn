@@ -1,34 +1,14 @@
-[gd_scene load_steps=17 format=3 uid="uid://68303wsnr01k"]
+[gd_scene load_steps=11 format=3 uid="uid://68303wsnr01k"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_3nx15"]
+[ext_resource type="PackedScene" uid="uid://c4nph5fo05gdh" path="res://test_map.blend" id="1_a3hvb"]
 [ext_resource type="Script" path="res://GravityField.gd" id="1_ep5tw"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ubapd"]
-albedo_color = Color(0, 1, 0.584314, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ym6qn"]
 radius = 10.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_2bj0k"]
 radius = 20.0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qjl87"]
-albedo_color = Color(1, 0, 0, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sr4yp"]
-albedo_color = Color(0, 1, 0, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sd81d"]
-albedo_color = Color(0, 0, 1, 1)
-
-[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_ie6kt"]
-albedo_color = Color(1, 0, 0, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mxruo"]
-albedo_color = Color(0, 1, 0, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ixhde"]
-albedo_color = Color(0, 0, 1, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8rbf1"]
 albedo_color = Color(0.52549, 0, 1, 1)
@@ -49,11 +29,7 @@ albedo_color = Color(0, 0, 1, 1)
 
 [node name="Planet" type="Node3D" parent="."]
 
-[node name="Visual" type="CSGSphere3D" parent="Planet"]
-radius = 10.0
-radial_segments = 23
-rings = 15
-material = SubResource("StandardMaterial3D_ubapd")
+[node name="test_map" parent="Planet" instance=ExtResource("1_a3hvb")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Planet"]
 collision_layer = 2
@@ -68,30 +44,6 @@ script = ExtResource("1_ep5tw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Planet/Gravity Field"]
 shape = SubResource("SphereShape3D_2bj0k")
-
-[node name="X" type="CSGSphere3D" parent="Planet"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0)
-material = SubResource("StandardMaterial3D_qjl87")
-
-[node name="Y" type="CSGSphere3D" parent="Planet"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 15, 0)
-material = SubResource("StandardMaterial3D_sr4yp")
-
-[node name="Z" type="CSGSphere3D" parent="Planet"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15)
-material = SubResource("StandardMaterial3D_sd81d")
-
-[node name="-X" type="CSGBox3D" parent="Planet"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0)
-material = SubResource("ORMMaterial3D_ie6kt")
-
-[node name="-Y" type="CSGBox3D" parent="Planet"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -15, 0)
-material = SubResource("StandardMaterial3D_mxruo")
-
-[node name="-Z" type="CSGBox3D" parent="Planet"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -15)
-material = SubResource("StandardMaterial3D_ixhde")
 
 [node name="Player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 0)
