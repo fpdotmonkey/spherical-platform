@@ -29,8 +29,8 @@ enum JumpState {
 }
 
 
-func new_center(new_center: Vector3):
-	center = new_center
+func new_center(new: Vector3):
+	center = new
 	
 	
 func update_gravity():
