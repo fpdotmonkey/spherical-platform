@@ -6,9 +6,10 @@ extends CharacterBody3D
 var center: Vector3 = Vector3.ZERO
 var forward: GoDirection = GoDirection.NEUTRAL
 var left: GoDirection = GoDirection.NEUTRAL
-var local_velocity: Vector3 = Vector3.ZERO
+var input_velocity: Vector3 = Vector3.ZERO
 
 @onready var velocity_debug = $velocity_thing
+@onready var camera = $CameraBase
 
 enum GoDirection {
 	NEUTRAL,
@@ -64,12 +65,14 @@ func _input(event):
 			x = 1.0
 		GoDirection.NEUTRAL, _:
 			x = 0.0
-	local_velocity = speed * Vector3(x, 0.0, z).normalized()
+	input_velocity = speed * Vector3(x, 0.0, z).normalized()
 
 
 func _physics_process(_delta):
 	update_gravity()
-	velocity = transform.basis * local_velocity
+	velocity = transform.basis * (
+		input_velocity.rotated(Vector3.UP, camera.rotation.y)
+	)
 	move_and_slide()
 	
 	
