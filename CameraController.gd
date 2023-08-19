@@ -16,13 +16,12 @@ func rotate_camera(move):
 	camera_rot.rotation.x = clamp(camera_rot.rotation.x + move.y, camera_x_rot_min, camera_x_rot_max)
 
 
-func toggle_mouse_mode():
-	if Input.get_mouse_mode() != Input.MOUSE_MODE_CAPTURED:
+func enable_control(enabled: bool):
+	if enabled:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		control_enabled = true
 	else:
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		control_enabled = false
+	control_enabled = enabled
 
 
 func _ready():
@@ -34,4 +33,6 @@ func _input(event):
 		var camera_speed_this_frame = camera_mouse_rotation_speed
 		rotate_camera(event.relative * camera_speed_this_frame)
 	elif event.is_action_pressed("pause"):
-		toggle_mouse_mode()
+		enable_control(!control_enabled)
+	elif event is InputEventMouseButton:
+		enable_control(true)
