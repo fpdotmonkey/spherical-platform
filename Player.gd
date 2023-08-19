@@ -2,10 +2,15 @@ extends CharacterBody3D
 
 
 @export var speed: float = 3.0
+@export var jump_launch: float = 6.0
+@export var gravity: float = 10.0
 
 var center: Vector3 = Vector3.ZERO
 var forward: GoDirection = GoDirection.NEUTRAL
 var left: GoDirection = GoDirection.NEUTRAL
+var jump_state: JumpState = JumpState.NOT
+var jump_speed: float = 0.0
+
 var input_velocity: Vector3 = Vector3.ZERO
 
 @onready var velocity_debug = $velocity_thing
@@ -17,9 +22,15 @@ enum GoDirection {
 	REVERSE
 }
 
+enum JumpState {
+	NOT,
+	PREPARING,
+	JUMPING
+}
 
-func new_gravity(gravity: Vector3):
-	center = gravity
+
+func new_center(new_center: Vector3):
+	center = new_center
 	
 	
 func update_gravity():
@@ -42,6 +53,9 @@ func _input(event):
 		forward = GoDirection.REVERSE
 	elif event.is_action_pressed("right"):
 		left = GoDirection.REVERSE
+	elif event.is_action_pressed("jump"):
+		if jump_state != JumpState.JUMPING:
+			jump_state = JumpState.PREPARING
 	elif event.is_action_released("up") or event.is_action_released("down"):
 		forward = GoDirection.NEUTRAL
 	elif event.is_action_released("left") or event.is_action_released("right"):
@@ -68,8 +82,21 @@ func _input(event):
 	input_velocity = speed * Vector3(x, 0.0, z).normalized()
 
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	update_gravity()
+	match jump_state:
+		JumpState.PREPARING:
+			jump_speed = jump_launch
+			jump_state = JumpState.JUMPING
+		JumpState.JUMPING:
+			jump_speed += -gravity * delta
+			if is_on_floor():
+				jump_state = JumpState.NOT
+		JumpState.NOT:
+			jump_speed += -gravity * delta
+			if is_on_floor():
+				jump_speed = 0.0
+	input_velocity.y = jump_speed
 	velocity = transform.basis * (
 		input_velocity.rotated(Vector3.UP, camera.rotation.y)
 	)
